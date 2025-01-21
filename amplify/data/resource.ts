@@ -11,18 +11,24 @@ const schema = a.schema({
     .model({
       content: a.string(),
     })
-    .authorization((allow) => [allow.publicApiKey()]),
+    .authorization((allow) => [allow.owner()]),
+  // .authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
   schema,
+  /* This tells the data client in your app (generateClient())
+    to sign API requests with the user authentication token. */
+  // authorizationModes: {
+  //   defaultAuthorizationMode: "apiKey",
+  //   apiKeyAuthorizationMode: {
+  //     expiresInDays: 30,
+  //   },
+  // },
   authorizationModes: {
-    defaultAuthorizationMode: "apiKey",
-    apiKeyAuthorizationMode: {
-      expiresInDays: 30,
-    },
+    defaultAuthorizationMode: "userPool",
   },
 });
 
